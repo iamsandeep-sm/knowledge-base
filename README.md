@@ -32,17 +32,17 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 03 | [ Data Structures](./03-data-structures/) | Lists, tuples, dicts, sets |  Available |
 | 04 | [ Functions](./04-functions/) | Defining, arguments, return, scope, lambda, recursion, built-ins |  Available |
 | 05 | [Comprehensions](./05-comprehensions/) | List, dict, set comprehensions, generator expressions | Available |
-| 06 | [Modules and Packages](./06-modules-and-packages/) | Imports, packages, pip, virtual environments | Upcoming |
-| 07 | [Exception Handling](./07-exception-handling/) | try / except, else, finally, raise | Upcoming |
-| 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Upcoming |
-| 09 | [OOP](./09-object-oriented-programming/) | Classes, objects, inheritance | Upcoming |
-| 10 | [Advanced Python](./10-advanced-python/) | Iterators, generators, decorators, type hints | Upcoming |
-| 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Upcoming |
-| 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Upcoming |
-| 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Upcoming |
-| 14 | [Practice](./14-practice/) | Practice questions and answers | Beginner questions available |
-| 15 | [Mini Projects](./15-mini-projects/) | Small projects to apply it all | Upcoming |
-| 16 | [Revision](./16-revision/) | Cheat sheets and common mistakes | Cheat sheets and mistakes available |
+| 06 | [Modules and Packages](./06-modules-and-packages/) | Imports, packages, pip, virtual environments | Working |
+| 07 | [Exception Handling](./07-exception-handling/) | try / except, else, finally, raise | Working |
+| 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Working |
+| 09 | [OOP](./09-object-oriented-programming/) | Classes, objects, inheritance | Working |
+| 10 | [Advanced Python](./10-advanced-python/) | Iterators, generators, decorators, type hints | Working |
+| 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Working |
+| 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Working |
+| 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Working |
+| 14 | [Practice](./14-practice/) | Practice questions and answers | rn - Beginner questions available |
+| 15 | [Mini Projects](./15-mini-projects/) | Small projects to apply it all | Working |
+| 16 | [Revision](./16-revision/) | Cheat sheets and common mistakes | rn - Cheat sheets and mistakes available |
 
 ---
 
