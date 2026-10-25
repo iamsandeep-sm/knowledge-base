@@ -30,8 +30,8 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 01 | [ Basics](./01-basics/) | Variables, data types, input/output |  Available |
 | 02 | [ Control Flow](./02-control-flow/) | Conditionals, loops |  Available |
 | 03 | [ Data Structures](./03-data-structures/) | Lists, tuples, dicts, sets |  Available |
-| 04 | [ Functions](./04-functions/) | Defining, arguments, scope |  Active |
-| 05 | [Comprehensions](./05-comprehensions/) | List, dict, set comprehensions, generator expressions | Notes available (generators upcoming) |
+| 04 | [ Functions](./04-functions/) | Defining, arguments, return, scope, lambda, recursion, built-ins |  Available |
+| 05 | [Comprehensions](./05-comprehensions/) | List, dict, set comprehensions, generator expressions | Available |
 | 06 | [Modules and Packages](./06-modules-and-packages/) | Imports, packages, pip, virtual environments | Upcoming |
 | 07 | [Exception Handling](./07-exception-handling/) | try / except, else, finally, raise | Upcoming |
 | 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Upcoming |
