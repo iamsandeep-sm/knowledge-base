@@ -34,7 +34,7 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 05 | [Comprehensions](./05-comprehensions/) | List, dict, set comprehensions, generator expressions | Available |
 | 06 | [Modules and Packages](./06-modules-and-packages/) | Imports, packages, pip, virtual environments | Available |
 | 07 | [Exception Handling](./07-exception-handling/) | try / except, else, finally, raise | Available |
-| 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Available soon |
+| 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Available |
 | 09 | [OOP](./09-object-oriented-programming/) | Classes, objects, inheritance | Working |
 | 10 | [Advanced Python](./10-advanced-python/) | Iterators, generators, decorators, type hints | Working |
 | 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Working |
