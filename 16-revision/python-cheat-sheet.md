@@ -11,6 +11,8 @@
 - [Sets](#sets)
 - [Functions](#functions)
 - [Comprehensions](#comprehensions)
+- [Modules and Packages](#modules-and-packages)
+- [Exception Handling](#exception-handling)
 
 ---
 
@@ -455,6 +457,101 @@ next(gen, "default")                    # one value at a time
 ```
 
 **Key points:** a list comprehension builds the whole list; a generator makes one item at a time and can be used once. The loop variable does not leak out of a comprehension. If it is hard to read, use a normal loop.
+
+---
+
+---
+
+## Modules and Packages
+
+```python
+import math                          # use as math.sqrt(4)
+from math import sqrt, pi            # use as sqrt(4)
+import math as m                     # alias
+dir(math)                            # names inside a module
+help(math.sqrt)                      # documentation
+
+import sys
+sys.path                             # folders Python searches
+
+# mymath.py
+def add(a, b):
+    return a + b
+
+if __name__ == "__main__":           # runs only when run directly
+    print(add(2, 3))
+
+# packages: folder + __init__.py
+from shop.cart import total          # absolute import
+from .prices import with_tax         # relative import (inside a package)
+```
+
+```
+python mymath.py                     # run a file
+python -m shop.cart                  # run a module inside a package
+
+python -m pip --version
+python -m pip install name           # latest
+python -m pip install name==1.2.3    # exact version
+python -m pip install -U name        # upgrade
+python -m pip uninstall name
+python -m pip list
+python -m pip show name
+python -m pip freeze > requirements.txt
+python -m pip install -r requirements.txt
+
+python -m venv .venv                 # create
+.venv\Scripts\activate              # activate on Windows
+source .venv/bin/activate            # activate on macOS / Linux
+deactivate                           # leave
+```
+
+**Key points:** `__name__` is `"__main__"` when a file is run directly and the module name when imported. A module loads only once. Search order: loaded modules, built-ins, `sys.path`. Use `python -m pip` so pip matches your Python. One virtual environment per project; keep `.venv/` out of Git.
+
+---
+
+## Exception Handling
+
+```python
+try:
+    x = int(input("Number: "))
+    result = 10 / x
+except ValueError:                   # specific first
+    print("not a number")
+except ZeroDivisionError as e:       # as e -> the exception object
+    print("error:", e)
+except (TypeError, KeyError):        # several types: use a tuple
+    print("type or key problem")
+except Exception as e:               # last resort
+    print(type(e).__name__, e)
+else:                                # only if NO exception
+    print("result", result)
+finally:                             # ALWAYS runs
+    print("done")
+
+raise ValueError("bad value")        # raise your own
+raise                                # re-raise (inside except)
+raise RuntimeError("x") from e       # chain with the cause
+
+class MyError(Exception):            # custom exception
+    pass
+
+assert x > 0, "x must be positive"   # development check only
+```
+
+| Exception | Typical cause |
+|---|---|
+| `ValueError` | Right type, bad value: `int("abc")` |
+| `TypeError` | Wrong type: `"a" + 1` |
+| `ZeroDivisionError` | `1 / 0` |
+| `IndexError` / `KeyError` | Bad index / missing key |
+| `NameError` | Name not defined |
+| `AttributeError` | No such attribute or method |
+| `FileNotFoundError` | File does not exist |
+| `ModuleNotFoundError` | Module not found |
+| `RecursionError` | Recursion too deep |
+
+**Key points:** syntax errors stop the file before it runs; exceptions happen while it runs. Only the first matching `except` runs. Catch specific exceptions and keep the `try` block small. `finally` runs even with `return`. A bare `except:` also catches `Ctrl + C`.
 
 ---
 

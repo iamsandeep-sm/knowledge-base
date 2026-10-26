@@ -11,6 +11,8 @@
 - [Sets](#sets)
 - [Functions](#functions)
 - [Comprehensions](#comprehensions)
+- [Modules and Packages](#modules-and-packages)
+- [Exception Handling](#exception-handling)
 
 ---
 
@@ -211,6 +213,54 @@
 | `len(gen)` or `gen[0]` | `TypeError` | Convert to a list first |
 | Using a generator twice | Second time it is empty | Recreate it |
 | Very long, nested comprehension | Hard to read | Use a normal loop |
+
+---
+
+---
+
+## Modules and Packages
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| `import mymath.py` | `ModuleNotFoundError: ... 'mymath' is not a package` | `import mymath` (no `.py`) |
+| Misspelled or not-installed module | `ModuleNotFoundError: No module named '...'` | Check the name, `python -m pip install ...` |
+| Module is in another folder | `ModuleNotFoundError` | Keep it next to the script, or in a package |
+| Naming your file `random.py`, `math.py`, `json.py` | Hides the real module (`AttributeError`) | Rename it and delete `__pycache__` |
+| `from math import *` | Name clashes, unclear origin | `import math` |
+| Test code at the top level of a module | Runs on every import | Put it under `if __name__ == "__main__":` |
+| Editing a module and not seeing the change | Old copy is still loaded | Restart (or `importlib.reload`) |
+| Two modules importing each other | `ImportError` (circular import) | Move shared code to a third module |
+| Running `python pkg/mod.py` with relative imports | `ImportError: attempted relative import with no known parent package` | `python -m pkg.mod` from the project folder |
+| `python -m pkg/mod` (slash) | Error | Use dots: `python -m pkg.mod` |
+| Plain `pip install` goes to the wrong Python | Installed, yet `ModuleNotFoundError` | `python -m pip install ...` |
+| `error: externally-managed-environment` | System Python is protected | Use a virtual environment |
+| `sudo pip install` | Can damage system tools | Use a virtual environment |
+| Installing before activating the venv | Package goes to the global Python | Check for `(.venv)`, then install |
+| Copying or committing `.venv/` | Large, not portable | Share `requirements.txt`, add `.venv/` to `.gitignore` |
+| `pip install six>=1.15` unquoted | Shell treats `>` as redirection | `pip install "six>=1.15"` |
+
+---
+
+## Exception Handling
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| Bare `except:` | Hides every error, even `Ctrl + C` | `except ValueError:` (or `except Exception:`) |
+| `except: pass` | Errors vanish silently | Print or log them |
+| General `except` before a specific one | The specific block never runs | Specific first |
+| A huge `try` block | Hard to know what failed | Wrap only the risky line |
+| `except ValueError, TypeError:` | `SyntaxError` in 3.13 and older | `except (ValueError, TypeError):` |
+| Using `e` after the `except` block | `NameError` | Use it inside the block |
+| `else` without `except`, or before `except` | `SyntaxError` | Order: `try`, `except`, `else`, `finally` |
+| `return` inside `finally` | Overrides the result, can hide exceptions | Do not return from `finally` |
+| Expecting `finally` to stop the error | It only runs, then the error continues | Add an `except` |
+| Using a variable in `finally` that `try` never set | `NameError` | Give it a start value first (`f = None`) |
+| `raise "text"` | `TypeError: exceptions must derive from BaseException` | `raise ValueError("text")` |
+| Bare `raise` outside `except` | `RuntimeError: No active exception to reraise` | Raise a specific exception |
+| New error inside `except` without `from` | Confusing "During handling..." traceback | `raise NewError(...) from e` |
+| `assert` to check user input | Skipped with `python -O` | Use `if` and `raise` |
+| Trying to `try/except` a syntax error in the same file | Python never starts the file | Fix the code |
+| `int(input())` crashes on text | `ValueError` | Wrap in `try` / `except ValueError` in a loop |
 
 ---
 
