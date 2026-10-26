@@ -13,6 +13,7 @@
 - [Comprehensions](#comprehensions)
 - [Modules and Packages](#modules-and-packages)
 - [Exception Handling](#exception-handling)
+- [File Handling](#file-handling)
 
 ---
 
@@ -261,6 +262,35 @@
 | `assert` to check user input | Skipped with `python -O` | Use `if` and `raise` |
 | Trying to `try/except` a syntax error in the same file | Python never starts the file | Fix the code |
 | `int(input())` crashes on text | `ValueError` | Wrap in `try` / `except ValueError` in a loop |
+
+---
+
+---
+
+## File Handling
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| Wrong file name or wrong folder | `FileNotFoundError: [Errno 2] No such file or directory` | Check the spelling and `os.getcwd()`, or use the full path |
+| Opening with `"w"` when you meant to add | The old content is **erased** | Use `"a"` |
+| Forgetting `\n` in `write()` | Everything on one line | `f.write(text + "\n")` |
+| `f.write(42)` | `TypeError: write() argument must be str, not int` | `f.write(str(42))` |
+| Not closing the file | Data may not be saved | Use `with open(...)` |
+| Using the file after the `with` block | `ValueError: I/O operation on closed file.` | Work inside the block |
+| Reading twice | The second `read()` is empty | `f.seek(0)` |
+| `print(line)` while looping | Blank lines between lines | `print(line.strip())` |
+| No `encoding` | Different results on different computers | `encoding="utf-8"` |
+| Windows path `"C:\new\file.txt"` | `\n` becomes a newline character | `r"C:\new\file.txt"` or `/` |
+| `"x"` on an existing file | `FileExistsError` | Another name, or `"w"` / `"a"` |
+| Writing to a folder that does not exist | `FileNotFoundError` | `os.makedirs(folder, exist_ok=True)` |
+| CSV without `newline=""` | Blank rows on Windows | `open(..., newline="")` |
+| `line.split(",")` for CSV | Breaks on quoted commas | `csv.reader` |
+| CSV numbers used as numbers | They are strings | `int(...)` / `float(...)` |
+| `json.load(text)` / `json.dump(data)` | `AttributeError` / `TypeError` | `loads` for strings, `dump(data, f)` needs a file |
+| Saving a set or date in JSON | `TypeError: ... is not JSON serializable` | Convert it, or use `default=str` |
+| JSON with single quotes or a trailing comma | `JSONDecodeError` | Double quotes, no trailing comma |
+| Integer keys / tuples after JSON | Come back as strings / lists | Convert back |
+| Opening a JSON file with `"w"` before loading | The data is erased | Load first, then write |
 
 ---
 

@@ -13,6 +13,7 @@
 - [Comprehensions](#comprehensions)
 - [Modules and Packages](#modules-and-packages)
 - [Exception Handling](#exception-handling)
+- [File Handling](#file-handling)
 
 ---
 
@@ -552,6 +553,68 @@ assert x > 0, "x must be positive"   # development check only
 | `RecursionError` | Recursion too deep |
 
 **Key points:** syntax errors stop the file before it runs; exceptions happen while it runs. Only the first matching `except` runs. Catch specific exceptions and keep the `try` block small. `finally` runs even with `return`. A bare `except:` also catches `Ctrl + C`.
+
+---
+
+---
+
+## File Handling
+
+```python
+# read
+with open("notes.txt", encoding="utf-8") as f:   # "r" is the default
+    text = f.read()                  # whole file as one string
+    # f.readline()                   # one line
+    # f.readlines()                  # list of lines (with \n)
+    # f.read().splitlines()          # list of lines (no \n)
+    # for line in f: ...             # line by line (best for big files)
+    # f.seek(0)                      # back to the start
+
+# write
+with open("out.txt", "w", encoding="utf-8") as f:    # "w" erases the file
+    f.write("text\n")                # no newline added for you
+    f.writelines(["a\n", "b\n"])
+    print("text", file=f)            # print adds the newline
+
+with open("out.txt", "a", encoding="utf-8") as f:    # append at the end
+    f.write("more\n")
+
+# modes: r read | w write (erase) | a append | x new only | b binary | + read+write
+```
+
+```python
+import os
+os.path.exists(p); os.path.isfile(p); os.path.getsize(p)
+os.remove(p); os.rename(a, b); os.listdir(folder)
+os.makedirs(folder, exist_ok=True); os.path.join("data", "a.txt")
+```
+
+```python
+# CSV: always newline=""
+import csv
+with open("p.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.writer(f); w.writerow(["name", "age"]); w.writerows(rows)
+with open("p.csv", newline="", encoding="utf-8") as f:
+    for row in csv.reader(f): ...          # lists of strings
+    # csv.DictReader(f) -> dicts;  csv.DictWriter(f, fieldnames=[...])
+
+# JSON
+import json
+text = json.dumps(data, indent=4)          # Python -> string
+data = json.loads(text)                    # string -> Python
+with open("d.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=4)           # Python -> file
+with open("d.json", encoding="utf-8") as f:
+    data = json.load(f)                    # file -> Python
+```
+
+| JSON | Python |
+|---|---|
+| object / array | dict / list |
+| string / number | str / int, float |
+| true / false / null | True / False / None |
+
+**Key points:** use `with` so the file always closes. `"w"` erases the file. `write()` needs a string and does not add `\n`. Always give `encoding="utf-8"`. CSV values are strings. JSON turns tuples into lists and keys into strings. Catch `FileNotFoundError` for missing files.
 
 ---
 
