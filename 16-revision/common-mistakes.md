@@ -14,6 +14,7 @@
 - [Modules and Packages](#modules-and-packages)
 - [Exception Handling](#exception-handling)
 - [File Handling](#file-handling)
+- [Object-Oriented Programming](#object-oriented-programming)
 
 ---
 
@@ -291,9 +292,36 @@
 | JSON with single quotes or a trailing comma | `JSONDecodeError` | Double quotes, no trailing comma |
 | Integer keys / tuples after JSON | Come back as strings / lists | Convert back |
 | Opening a JSON file with `"w"` before loading | The data is erased | Load first, then write |
-
 ---
+---
+## Object-Oriented Programming
 
+| Mistake | What happens | Fix |
+|---|---|---|
+| Method without `self`: `def bark():` | `TypeError: Dog.bark() takes 0 positional arguments but 1 was given` | `def bark(self):` |
+| Calling a method on the class: `Dog.bark()` | `TypeError: ... missing 1 required positional argument: 'self'` | Make an object first |
+| `name = name` in `__init__` | Nothing is stored on the object | `self.name = name` |
+| Misspelling `__init__` (`__int__`, `_init_`) | It never runs automatically | Two underscores on both sides |
+| `tommy = Dog` (no brackets) | `tommy` is the class, not an object | `Dog()` |
+| Passing arguments to a class without `__init__` | `TypeError: Dog() takes no arguments` | Add `__init__` |
+| Returning a value from `__init__` | `TypeError: __init__() should return None, not 'int'` | Do not return |
+| Mutable default (`items=[]`) or mutable class attribute | All objects share one list | `None` default / create in `__init__` |
+| `self.count += 1` for a shared counter | Creates an instance attribute; class counter unchanged | `ClassName.count += 1` |
+| `a.school = "X"` expecting all objects to change | Only `a` changes | `Student.school = "X"` |
+| Child `__init__` without `super().__init__()` | Parent attributes are missing (`AttributeError`) | Call `super().__init__(...)` |
+| Inheritance for "has a" | Wrong design | Composition (`self.engine = Engine()`) |
+| `type(x) == Parent` | Rejects child objects | `isinstance(x, Parent)` |
+| Setter stores in the property's own name | `RecursionError` | Store in `self._name` |
+| Assigning to a read-only property | `AttributeError: property 'x' of 'C' object has no setter` | Add a setter |
+| Thinking `__x` is truly private | `obj._Class__x` still works | It is a convention, not security |
+| Not inheriting from `ABC` | `@abstractmethod` is not enforced | `class Shape(ABC):` |
+| Creating an abstract class or an incomplete child | `TypeError: Can't instantiate abstract class ...` | Implement every abstract method |
+| Defining a method twice (expecting overloading) | The second replaces the first | Default arguments or `*args` |
+| `__str__` that prints instead of returning | `TypeError: __str__ returned non-string` | `return` a string |
+| `__eq__` without `__hash__` | Object cannot go in a set or be a dict key | Also define `__hash__` |
+| `3 + obj` fails | No `__radd__` | Add `__radd__` |
+| `__iadd__` without `return self` | Variable becomes `None` | End with `return self` |
+---
 ---
 
 - [Back to section index](./README.md)

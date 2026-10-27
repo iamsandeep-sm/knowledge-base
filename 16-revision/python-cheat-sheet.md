@@ -14,6 +14,7 @@
 - [Modules and Packages](#modules-and-packages)
 - [Exception Handling](#exception-handling)
 - [File Handling](#file-handling)
+- [Object-Oriented Programming](#object-oriented-programming)
 
 ---
 
@@ -615,6 +616,78 @@ with open("d.json", encoding="utf-8") as f:
 | true / false / null | True / False / None |
 
 **Key points:** use `with` so the file always closes. `"w"` erases the file. `write()` needs a string and does not add `\n`. Always give `encoding="utf-8"`. CSV values are strings. JSON turns tuples into lists and keys into strings. Catch `FileNotFoundError` for missing files.
+
+---
+
+---
+
+## Object-Oriented Programming
+
+```python
+class Student:
+    school = "Green Valley"                  # class attribute (shared)
+    count = 0
+
+    def __init__(self, name, marks=0):       # constructor
+        self.name = name                     # instance attributes
+        self.marks = marks
+        Student.count += 1
+
+    def grade(self):                         # instance method
+        return "Pass" if self.marks >= 40 else "Fail"
+
+    @classmethod
+    def from_string(cls, text):              # alternative constructor
+        name, marks = text.split("-")
+        return cls(name, int(marks))
+
+    @staticmethod
+    def is_valid(marks):                     # needs neither self nor cls
+        return 0 <= marks <= 100
+
+    @property
+    def result(self):                        # read like an attribute
+        return f"{self.name}: {self.grade()}"
+
+    def __str__(self):  return self.name                 # print(obj)
+    def __repr__(self): return f"Student({self.name!r})" # debugging
+
+s = Student("Riya", 85)
+```
+
+```python
+class Dog(Animal):                           # inheritance
+    def __init__(self, name, breed):
+        super().__init__(name)               # run the parent's __init__
+        self.breed = breed
+    def sound(self):                         # overriding
+        return "Woof"
+
+isinstance(d, Animal); issubclass(Dog, Animal); Dog.__mro__
+
+self._x      # protected (convention)       self.__x   # name-mangled (_Class__x)
+
+@property
+def balance(self): return self._balance
+@balance.setter
+def balance(self, v): self._balance = v
+
+from abc import ABC, abstractmethod          # abstraction
+class Shape(ABC):
+    @abstractmethod
+    def area(self): ...
+```
+
+| Dunder | Triggered by | Dunder | Triggered by |
+|---|---|---|---|
+| `__init__` | `Cls(...)` | `__add__` | `a + b` |
+| `__str__` | `print(x)`, `str(x)` | `__eq__` | `a == b` |
+| `__repr__` | shell, lists, `repr(x)` | `__lt__` | `a < b`, `sorted()` |
+| `__len__` | `len(x)` | `__getitem__` | `x[i]` |
+| `__iter__` / `__next__` | `for ... in x` | `__call__` | `x(...)` |
+| `__enter__` / `__exit__` | `with x:` | `__hash__` | `set`, dict keys |
+
+**Key points:** a class is the blueprint, an object is the thing built from it. `self` is the object itself. Instance attributes belong to one object, class attributes are shared. A child calls `super().__init__()`. Python has no real private data (`__x` is only mangled). Polymorphism: same method name, different behaviour (duck typing). Abstract classes cannot be instantiated. Use inheritance for "is a" and composition for "has a".
 
 ---
 
