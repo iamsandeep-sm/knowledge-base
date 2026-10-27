@@ -13,6 +13,7 @@ Practice questions (and their answers where written) for each topic. Try the que
 | [Loops](./beginner/loops-practice.md) (with answers) | [For loops](../02-control-flow/for-loops.md) |
 | [Functions](./beginner/functions-practice.md) (with answers) | [Functions](../04-functions/README.md) |
 | [Comprehensions](./beginner/comprehensions-practice.md) (with answers) | [Comprehensions](../05-comprehensions/README.md) |
+| [Object-Oriented Programming](./beginner/oop-practice.md) (with answers) | [OOP](../09-object-oriented-programming/README.md) |
 | [Lists](./beginner/lists-practice.md) (questions only) | [Lists](../03-data-structures/lists.md) |
 | [Tuples](./beginner/tuples-practice.md) (questions only) | [Tuples](../03-data-structures/tuples.md) |
 | [Dictionaries](./beginner/dictionaries-practice.md) (questions only) | [Dictionaries](../03-data-structures/dictionaries.md) |
