@@ -15,6 +15,7 @@
 - [Exception Handling](#exception-handling)
 - [File Handling](#file-handling)
 - [Object-Oriented Programming](#object-oriented-programming)
+- [Advanced Python](#advanced-python)
 
 ---
 
@@ -688,6 +689,94 @@ class Shape(ABC):
 | `__enter__` / `__exit__` | `with x:` | `__hash__` | `set`, dict keys |
 
 **Key points:** a class is the blueprint, an object is the thing built from it. `self` is the object itself. Instance attributes belong to one object, class attributes are shared. A child calls `super().__init__()`. Python has no real private data (`__x` is only mangled). Polymorphism: same method name, different behaviour (duck typing). Abstract classes cannot be instantiated. Use inheritance for "is a" and composition for "has a".
+
+---
+
+## Advanced Python
+
+**Iterators and generators**
+```python
+it = iter([1, 2])          # iterable -> iterator
+print(next(it), next(it))  # next(it, default) avoids StopIteration
+
+def countdown(n):
+    while n > 0:
+        yield n            # pauses here, remembers state
+        n -= 1
+
+print(list(countdown(3)))
+print(sum(x * x for x in range(4)))   # generator expression
+# Output: 1 2
+# Output: [3, 2, 1]
+# Output: 14
+```
+
+**Closures and decorators**
+```python
+from functools import wraps
+
+def make_counter():
+    count = 0
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter
+
+def logged(func):
+    @wraps(func)                       # keep name and docstring
+    def wrapper(*args, **kwargs):
+        print("calling", func.__name__)
+        return func(*args, **kwargs)   # return the result
+    return wrapper
+
+@logged
+def add(a, b):
+    return a + b
+
+c = make_counter()
+print(c(), c(), add(1, 2))
+# Output: calling add
+# Output: 1 2 3
+```
+
+**Context managers**
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def tag(name):
+    print(f"<{name}>")
+    try:
+        yield
+    finally:
+        print(f"</{name}>")
+
+with tag("p"):
+    print("text")
+# Output: <p>
+# Output: text
+# Output: </p>
+```
+
+**Type hints** (ignored at run time; checked by mypy or pyright)
+```python
+def first(items: list[int]) -> int | None:
+    return items[0] if items else None
+
+print(first([7]), first([]))
+# Output: 7 None
+```
+
+| Topic | Remember |
+|---|---|
+| Iterator | `__iter__` + `__next__`; used up after one pass; ends with `StopIteration` |
+| Generator | `yield` pauses; lazy; saves memory; `yield from` delegates |
+| Closure | Inner function remembers outer variables; `nonlocal` to change them |
+| Decorator | `@d` means `f = d(f)`; use `*args, **kwargs`, `return`, `@wraps` |
+| Stacked decorators | Applied bottom-up: `@a @b f` is `a(b(f))` |
+| Context manager | `__enter__` / `__exit__`, or `@contextmanager` with one `yield` |
+| Type hints | `list[int]` (3.9+), `X \| None` (3.10+), not enforced |
 
 ---
 

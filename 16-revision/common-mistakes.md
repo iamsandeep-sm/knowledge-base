@@ -15,6 +15,7 @@
 - [Exception Handling](#exception-handling)
 - [File Handling](#file-handling)
 - [Object-Oriented Programming](#object-oriented-programming)
+- [Advanced Python](#advanced-python)
 
 ---
 
@@ -292,8 +293,11 @@
 | JSON with single quotes or a trailing comma | `JSONDecodeError` | Double quotes, no trailing comma |
 | Integer keys / tuples after JSON | Come back as strings / lists | Convert back |
 | Opening a JSON file with `"w"` before loading | The data is erased | Load first, then write |
+
 ---
+
 ---
+
 ## Object-Oriented Programming
 
 | Mistake | What happens | Fix |
@@ -321,7 +325,31 @@
 | `__eq__` without `__hash__` | Object cannot go in a set or be a dict key | Also define `__hash__` |
 | `3 + obj` fails | No `__radd__` | Add `__radd__` |
 | `__iadd__` without `return self` | Variable becomes `None` | End with `return self` |
+
 ---
+
+## Advanced Python
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| Looping over an iterator or generator twice | The second loop gets nothing | Create it again, or store the results in a list |
+| Calling `next()` with no items left | `StopIteration` | `next(it, default)` |
+| `__iter__` not returning an iterator | `TypeError: iter() returned non-iterator` | Return `self` (with `__next__`) or `iter(...)` |
+| `list()` on an endless generator | The program never finishes | `itertools.islice(gen, n)` |
+| `send(value)` before the first `next()` | `TypeError` | Call `next(gen)` first |
+| Forgetting `nonlocal` when changing an outer variable | `UnboundLocalError` | `nonlocal count` |
+| Functions made in a loop all return the last value | Late binding | Default argument `i=i`, or a factory function |
+| Decorator wrapper does not `return` the result | The function returns `None` | `return func(*args, **kwargs)` |
+| Forgetting `@wraps(func)` | `__name__` and `__doc__` are lost | Add `@wraps(func)` |
+| `@repeat` without brackets when it takes an argument | The function becomes the argument | `@repeat(3)` |
+| `__enter__` without `return` | `as name` is `None` | `return self` |
+| `__exit__` returns `True` by accident | Every exception is hidden | Return `False` or nothing |
+| `@contextmanager` without `try` / `finally` around `yield` | Clean-up is skipped on error | Wrap `yield` in `try` / `finally` |
+| Expecting type hints to reject wrong types | Python ignores them at run time | Use mypy or pyright, or `isinstance` checks |
+| `int \| None` on Python 3.9 | `TypeError` | Python 3.10+, or `Optional[int]` |
+
+---
+
 ---
 
 - [Back to section index](./README.md)
