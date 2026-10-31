@@ -41,8 +41,7 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Working |
 | 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Working |
 | 14 | [Practice](./14-practice/) | Practice questions and answers | rn Beginner questions available |
-| 15 | [Mini Projects](./15-mini-projects/) | Small projects to apply it all | Working |
-| 16 | [Revision](./16-revision/) | Cheat sheets and common mistakes | rn Cheat sheets and mistakes available |
+| 15 | [Revision](./16-revision/) | Cheat sheets and common mistakes | rn Cheat sheets and mistakes available |
 
 ---
 
