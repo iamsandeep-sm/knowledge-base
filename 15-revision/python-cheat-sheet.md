@@ -16,6 +16,8 @@
 - [File Handling](#file-handling)
 - [Object-Oriented Programming](#object-oriented-programming)
 - [Advanced Python](#advanced-python)
+- [Useful Standard Library](#useful-standard-library)
+- [Testing and Code Quality](#testing-and-code-quality)
 
 ---
 
@@ -777,6 +779,192 @@ print(first([7]), first([]))
 | Stacked decorators | Applied bottom-up: `@a @b f` is `a(b(f))` |
 | Context manager | `__enter__` / `__exit__`, or `@contextmanager` with one `yield` |
 | Type hints | `list[int]` (3.9+), `X \| None` (3.10+), not enforced |
+
+---
+
+## Useful Standard Library
+
+**math, random, statistics**
+```python
+import math
+import random
+import statistics
+
+print(math.sqrt(16), math.ceil(2.1), math.floor(-2.1), math.gcd(12, 18))
+print(math.isclose(0.1 + 0.2, 0.3), math.comb(5, 2), round(math.pi, 2))
+print(statistics.mean([1, 2, 3, 4]), statistics.median([5, 1, 3]))
+
+random.seed(1)                       # repeatable results
+print(1 <= random.randint(1, 6) <= 6)
+# Output: 4.0 3 -3 6
+# Output: True 10 3.14
+# Output: 2.5 3
+# Output: True
+```
+| Task | Use |
+|---|---|
+| Random int from `a` to `b` (both included) | `random.randint(a, b)` |
+| One / several different / several with repeats | `choice`, `sample(seq, k)`, `choices(seq, k=n)` |
+| Mix a list in place (returns `None`) | `random.shuffle(items)` |
+| Secure token or password | `secrets.token_hex(16)`, `secrets.choice(...)` |
+
+**datetime**
+```python
+from datetime import date, datetime, timedelta
+
+d = date(2026, 11, 1)
+print(d.strftime("%d-%m-%Y %A"))
+print(d + timedelta(days=30))
+print((date(2026, 12, 25) - d).days)
+print(datetime.strptime("25/12/2026", "%d/%m/%Y").date())
+# Output: 01-11-2026 Sunday
+# Output: 2026-12-01
+# Output: 54
+# Output: 2026-12-25
+```
+| Code | Meaning | Code | Meaning |
+|---|---|---|---|
+| `%Y` / `%y` | Year 2026 / 26 | `%H` / `%I` | Hour 24h / 12h |
+| `%m` / `%B` | Month 11 / November | `%M` / `%S` | Minute / second |
+| `%d` / `%A` | Day 01 / Sunday | `%p` | AM / PM |
+
+Store and calculate in **UTC**; `datetime.now(timezone.utc)`; `zoneinfo.ZoneInfo("Asia/Kolkata")` for named zones.
+
+**pathlib**
+```python
+from pathlib import Path
+
+p = Path("docs") / "report.final.txt"
+print(p, p.name, p.stem, p.suffix, p.parent)
+print(p.with_suffix(".md"))
+# Output: docs/report.final.txt report.final.txt report.final .txt docs
+# Output: docs/report.final.md
+```
+`p.exists()`, `p.is_file()`, `p.mkdir(parents=True, exist_ok=True)`, `p.read_text(encoding="utf-8")`, `p.write_text(...)`, `sorted(p.glob("*.txt"))`, `p.rglob("*.py")`, `p.unlink(missing_ok=True)`. Copy or delete a whole folder with `shutil`.
+
+**collections**
+```python
+from collections import Counter, defaultdict, deque, namedtuple
+
+print(Counter("banana").most_common(2))
+
+groups = defaultdict(list)
+groups["a"].append(1)
+print(dict(groups))
+
+window = deque(maxlen=2)
+for n in (1, 2, 3):
+    window.append(n)
+print(list(window))
+
+Point = namedtuple("Point", "x y")
+print(Point(1, 2)._replace(y=5))
+# Output: [('a', 3), ('n', 2)]
+# Output: {'a': [1]}
+# Output: [2, 3]
+# Output: Point(x=1, y=5)
+```
+**itertools**
+```python
+from itertools import accumulate, chain, combinations, groupby, islice, product
+
+print(list(accumulate([1, 2, 3, 4])))
+print(list(chain([1], [2, 3])))
+print(list(islice(range(100), 3)))
+print(list(combinations("abc", 2)))
+print(len(list(product("01", repeat=3))))
+print([(k, len(list(g))) for k, g in groupby("aab")])
+# Output: [1, 3, 6, 10]
+# Output: [1, 2, 3]
+# Output: [0, 1, 2]
+# Output: [('a', 'b'), ('a', 'c'), ('b', 'c')]
+# Output: 8
+# Output: [('a', 2), ('b', 1)]
+```
+**Key points:** `isclose` for floats. `randint` includes both ends. `shuffle` works in place. Use `secrets`, not `random`, for security. A `timedelta` has no months. `.total_seconds()` gives the whole duration. `Path` objects use `/`. Always give `encoding="utf-8"`. `Counter`, `defaultdict` and `deque` replace common loops. `groupby` needs sorted input. Iterators are used up after one pass.
+
+---
+
+## Testing and Code Quality
+
+**assert**
+```python
+def average(numbers):
+    assert len(numbers) > 0, "need at least one number"
+    return sum(numbers) / len(numbers)
+
+try:
+    average([])
+except AssertionError as error:
+    print("failed:", error)
+# Output: failed: need at least one number
+```
+`assert` finds **your own** mistakes and disappears under `python -O`. Use `raise ValueError(...)` for bad **user input**.
+
+**unittest and pytest**
+```text
+# test_calculator.py          run:  python -m unittest      or      python -m pytest
+import unittest
+from calculator import add
+
+class TestAdd(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+
+    def test_error(self):
+        with self.assertRaises(TypeError):
+            add(1)
+
+# pytest style: a plain function with a plain assert
+def test_add():
+    assert add(2, 3) == 5
+```
+| Need | `unittest` | `pytest` |
+|---|---|---|
+| Equal | `assertEqual(a, b)` | `assert a == b` |
+| Exception | `assertRaises(E)` | `pytest.raises(E)` |
+| Floats | `assertAlmostEqual` | `pytest.approx` |
+| Fresh state | `setUp` | `@pytest.fixture` |
+| Many inputs | `subTest` | `@pytest.mark.parametrize` |
+| Fake a dependency | `unittest.mock.patch` | same |
+
+Test files are `test_*.py`, functions `test_*`. Pattern: **Arrange, Act, Assert**. `.` pass, `F` wrong answer, `E` crashed.
+
+**Debugging**
+```python
+import logging
+import sys
+
+x = 7
+print(f"{x=}")
+logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                    format="%(levelname)s: %(message)s", force=True)
+logging.info("started")
+logging.debug("hidden at INFO level")
+# Output: x=7
+# Output: INFO: started
+```
+| Tool | Use |
+|---|---|
+| Traceback | Read from the **last line**; the failing line is above it |
+| `breakpoint()` / `python -m pdb script.py` | `n` next, `s` step in, `c` continue, `p x` print, `l` list, `q` quit |
+| `logging` levels | DEBUG 10, INFO 20, **WARNING 30 (default)**, ERROR 40, CRITICAL 50 |
+| `timeit.timeit(code, number=n)` | Measure speed |
+
+**PEP 8 in one table**
+
+| Topic | Rule |
+|---|---|
+| Indent / line | 4 spaces; 79 characters (88 with black) |
+| Blank lines | 2 around top-level definitions, 1 between methods |
+| Names | `snake_case` variables and functions, `CapWords` classes, `UPPER_CASE` constants, `_private` |
+| Imports | One per line, at the top; standard library, third-party, your own |
+| Compare | `is None`, `if not items:`, `isinstance(x, T)` |
+| Never | Bare `except:`, `import *`, names `l`, `O`, `I`, mutable default arguments |
+
+Tools: `black` / `ruff format` fix layout; `flake8` / `ruff check` lint; `mypy` checks type hints.
+
+**Key points:** read the traceback from the bottom. Reproduce, isolate, test one idea at a time, then add a test for the bug. Good tests are fast, independent and repeatable. Comments explain **why**. Small functions, descriptive names, guard clauses, no magic numbers, no copy-paste.
 
 ---
 

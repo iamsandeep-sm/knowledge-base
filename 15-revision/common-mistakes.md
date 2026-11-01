@@ -16,6 +16,8 @@
 - [File Handling](#file-handling)
 - [Object-Oriented Programming](#object-oriented-programming)
 - [Advanced Python](#advanced-python)
+- [Useful Standard Library](#useful-standard-library)
+- [Testing and Code Quality](#testing-and-code-quality)
 
 ---
 
@@ -347,6 +349,61 @@
 | `@contextmanager` without `try` / `finally` around `yield` | Clean-up is skipped on error | Wrap `yield` in `try` / `finally` |
 | Expecting type hints to reject wrong types | Python ignores them at run time | Use mypy or pyright, or `isinstance` checks |
 | `int \| None` on Python 3.9 | `TypeError` | Python 3.10+, or `Optional[int]` |
+
+---
+
+## Useful Standard Library
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| Naming your file `math.py`, `random.py`, `datetime.py`, `collections.py` or `itertools.py` | Your file hides the real module | Rename your file |
+| `math.sqrt(-4)` | `ValueError: math domain error` | Check the input, or use `cmath` |
+| `math.sin(90)` expecting degrees | Wrong answer (radians) | `math.sin(math.radians(90))` |
+| Comparing floats with `==` | `0.1 + 0.2 == 0.3` is `False` | `math.isclose(a, b)` or `Decimal` |
+| `random.randrange(1, 6)` expecting 6 | Stop is not included | `random.randint(1, 6)` |
+| `x = random.shuffle(items)` | `x` is `None`; the list is shuffled in place | `random.shuffle(items)` |
+| Using `random` for passwords or tokens | Predictable | Use `secrets` |
+| `import datetime` then `datetime(2026, 1, 1)` | `TypeError: 'module' object is not callable` | `from datetime import datetime` |
+| `diff.seconds` for the full duration | Only the part after whole days | `diff.total_seconds()` |
+| `timedelta(months=1)` | `TypeError` | Use `days`, or `dateutil` |
+| Mixing naive and aware datetimes | `TypeError` | Make both aware (use UTC) |
+| `datetime.utcnow()` | Deprecated since Python 3.12 | `datetime.now(timezone.utc)` |
+| `"folder" / "file"` with plain strings | `TypeError` | `Path("folder") / "file"` |
+| `Path("a") / "/b"` | Result is `/b` (absolute part wins) | Do not start the second part with `/` |
+| `mkdir()` without `parents=True` / `exist_ok=True` | `FileNotFoundError` / `FileExistsError` | Add the options |
+| Reading a missing `defaultdict` key to test it | The key is created | `key in d` or `d.get(key)` |
+| `defaultdict(list())` | `TypeError` | `defaultdict(list)` (the function, no brackets) |
+| `list.pop(0)` for a queue | Slow for big lists | `collections.deque` and `popleft()` |
+| `groupby` without sorting first | The same key shows up in several groups | Sort by the same key first |
+| `list(itertools.count())` | Never ends | Limit it with `islice` |
+| Reusing an iterator | Second time it is empty | Make a list or create it again |
+
+---
+
+## Testing and Code Quality
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| Validating user input with `assert` | Checks vanish under `python -O` | `if ...: raise ValueError(...)` |
+| `assert (condition, "message")` | A tuple is always true: it never fails | `assert condition, "message"` |
+| Putting required work inside `assert` | Skipped under `-O` | Do the work first, then assert on the result |
+| Test file or method not starting with `test` | The test is never run | `test_*.py`, `def test_...` |
+| Test class not inheriting `unittest.TestCase` | `unittest` ignores it | `class TestX(unittest.TestCase):` |
+| `assertEqual` on floats | Fails from rounding | `assertAlmostEqual`, `pytest.approx` |
+| Tests depending on each other | Pass alone, fail together | `setUp` / fixtures for a fresh start |
+| Tests using the real clock, network or randomness | Slow or unpredictable | `Mock` and `patch` |
+| Patching the wrong name | The real function still runs | Patch where the name is **used** |
+| Only testing the happy path | Edge-case bugs slip through | Test empty, zero, one item, negative, errors |
+| Reading a traceback from the top | You miss the error | Start at the **last line** |
+| Fixing the line that crashed, not the cause | The bug moves | Find where the bad value came from |
+| Leaving `print` or `breakpoint()` in finished code | Noise, or the program stops | Remove them, or use `logging` |
+| `except: pass` | Hides the bug | Catch specific errors and log them |
+| `logging.basicConfig()` has no effect the second time | It is ignored once configured | `force=True` |
+| `import *`, one-letter names, `l`, `O`, `I` | Unreadable code | Import what you need; descriptive names |
+| A function named `CamelCase` or a class named `snake_case` | Misleads readers | Functions `snake_case`, classes `CapWords` |
+| Comments repeating the code | Noise that goes out of date | Explain **why**, or rename things |
+| Deep nesting | Hard to read | Guard clauses and small functions |
+| Formatting by hand | Time lost | `black` or `ruff format` |
 
 ---
 

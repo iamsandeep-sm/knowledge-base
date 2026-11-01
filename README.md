@@ -37,8 +37,8 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 08 | [File Handling](./08-file-handling/) | Reading and writing files, CSV, JSON | Available |
 | 09 | [OOP](./09-object-oriented-programming/) | Classes, objects, inheritance | Available |
 | 10 | [Advanced Python](./10-advanced-python/) | Iterators, generators, decorators, type hints | Available |
-| 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Working |
-| 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Working |
+| 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Available |
+| 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Available |
 | 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Working |
 | 14 | [Practice](./14-practice/) | Practice questions and answers | rn Beginner questions available |
 | 15 | [Revision](./15-revision/) | Cheat sheets and common mistakes | rn Cheat sheets and mistakes available |
