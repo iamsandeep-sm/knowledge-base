@@ -13,7 +13,13 @@ Practice questions (and their answers where written) for each topic. Try the que
 | [Loops](./beginner/loops-practice.md) (with answers) | [For loops](../02-control-flow/for-loops.md) |
 | [Functions](./beginner/functions-practice.md) (with answers) | [Functions](../04-functions/README.md) |
 | [Comprehensions](./beginner/comprehensions-practice.md) (with answers) | [Comprehensions](../05-comprehensions/README.md) |
+| [Modules and Packages](./beginner/modules-and-packages-practice.md) (with answers) | [Modules and Packages](../06-modules-and-packages/README.md) |
+| [Exception Handling](./beginner/exception-handling-practice.md) (with answers) | [Exception Handling](../07-exception-handling/README.md) |
+| [File Handling](./beginner/file-handling-practice.md) (with answers) | [File Handling](../08-file-handling/README.md) |
 | [Object-Oriented Programming](./beginner/oop-practice.md) (with answers) | [OOP](../09-object-oriented-programming/README.md) |
+| [Advanced Python](./beginner/advanced-python-practice.md) (with answers) | [Advanced Python](../10-advanced-python/README.md) |
+| [Standard Library](./beginner/standard-library-practice.md) (with answers) | [Standard Library](../11-useful-standard-library/README.md) |
+| [Testing and Code Quality](./beginner/testing-and-code-quality-practice.md) (with answers) | [Testing and Code Quality](../12-testing-and-code-quality/README.md) |
 | [Lists](./beginner/lists-practice.md) (questions only) | [Lists](../03-data-structures/lists.md) |
 | [Tuples](./beginner/tuples-practice.md) (questions only) | [Tuples](../03-data-structures/tuples.md) |
 | [Dictionaries](./beginner/dictionaries-practice.md) (questions only) | [Dictionaries](../03-data-structures/dictionaries.md) |
