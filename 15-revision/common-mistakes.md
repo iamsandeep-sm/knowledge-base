@@ -18,6 +18,7 @@
 - [Advanced Python](#advanced-python)
 - [Useful Standard Library](#useful-standard-library)
 - [Testing and Code Quality](#testing-and-code-quality)
+- [Data Structures and Algorithms](#data-structures-and-algorithms)
 
 ---
 
@@ -404,6 +405,43 @@
 | Comments repeating the code | Noise that goes out of date | Explain **why**, or rename things |
 | Deep nesting | Hard to read | Guard clauses and small functions |
 | Formatting by hand | Time lost | `black` or `ruff format` |
+
+## Data Structures and Algorithms
+
+| Mistake | What happens | Fix |
+|---|---|---|
+| `x in some_list` inside a loop on big data | `O(n²)` overall | Convert the list to a `set` once |
+| `list.pop(0)` / `insert(0, x)` as a queue | `O(n)` each | `collections.deque` |
+| `result += text` in a long loop | Slow repeated copying | Collect pieces and `"".join(...)` |
+| Binary search on unsorted data | Wrong answers | Sort first, or use linear search |
+| `(low + high) // 2` loops that never move | Infinite loop | `low = mid + 1` / `high = mid - 1` |
+| Wrong loop condition (`<` vs `<=`) | Off-by-one, missed last item | Test with 0, 1 and 2 items |
+| `[[0] * 3] * 3` for a matrix | All rows are the same list | `[[0] * 3 for _ in range(3)]` |
+| Changing a list while looping over it | Items skipped | Loop over a copy, or build a new list |
+| Using `.sort()` result | It returns `None` | `sorted(x)` or `x.sort()` alone |
+| Expecting `heapq` to print sorted | It is only partly ordered | `heappop` repeatedly, or `sorted()` |
+| `heapq` for the largest item | It is a min-heap | Push negated values |
+| Unhashable key (`list`, `dict`, `set`) | `TypeError: unhashable type` | Use a `tuple` or `frozenset` |
+| Defining `__eq__` without `__hash__` | Object cannot be a key | Define both, based on the same fields |
+| Mutating an object used as a key | Lookups fail | Use immutable keys |
+| `dict[key]` for a missing key | `KeyError` | `.get()`, `defaultdict`, `Counter` |
+| Popping from an empty stack or queue | `IndexError` | Check `if stack:` first |
+| Marking visited when dequeuing (BFS) | Vertices queued many times | Mark when you **enqueue** |
+| No visited set in graph search | Infinite loop on cycles | Always track visited nodes |
+| One edge direction only for an undirected graph | Missing connections | Add both directions |
+| Grid neighbours without bounds checks | `IndexError`, or negative indexes wrap around | `0 <= r < rows and 0 <= c < cols` |
+| Using BFS for weighted shortest paths | Wrong answer | Dijkstra (non-negative weights) |
+| `node.next.value` on the last node | `AttributeError` on `None` | Check `if node.next:` |
+| Overwriting `current.next` before saving it | Rest of the list is lost | `next_node = current.next` first |
+| Forgetting to update `head` or `tail` | Changes disappear | Return the new head, update `tail` |
+| Comparing nodes with `==` for cycle detection | Compares values, not identity | `slow is fast` |
+| Recursive function with no base case | `RecursionError` | Decide the smallest input first |
+| Appending the working list in backtracking | Every result ends up the same or empty | `results.append(path[:])` |
+| Forgetting the undo step (`pop`) | Wrong or missing results | Pair every `append` with a `pop` |
+| Plain recursive `fib(40)` | Takes forever | `@cache` or a loop |
+| `memo={}` as a default argument | The dictionary is shared across calls | `memo=None`, create it inside |
+| BST checked only with `left < node < right` | Deep violations are missed | Pass down `(low, high)` limits |
+| Inserting sorted data into a plain BST | A chain, `O(n)` operations | Shuffle, or use a balanced structure |
 
 ---
 

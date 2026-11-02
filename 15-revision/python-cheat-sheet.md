@@ -18,6 +18,7 @@
 - [Advanced Python](#advanced-python)
 - [Useful Standard Library](#useful-standard-library)
 - [Testing and Code Quality](#testing-and-code-quality)
+- [Data Structures and Algorithms](#data-structures-and-algorithms)
 
 ---
 
@@ -965,6 +966,110 @@ logging.debug("hidden at INFO level")
 Tools: `black` / `ruff format` fix layout; `flake8` / `ruff check` lint; `mypy` checks type hints.
 
 **Key points:** read the traceback from the bottom. Reproduce, isolate, test one idea at a time, then add a test for the bug. Good tests are fast, independent and repeatable. Comments explain **why**. Small functions, descriptive names, guard clauses, no magic numbers, no copy-paste.
+
+## Data Structures and Algorithms
+
+**Big-O (worst case, ordered from fast to slow)**
+
+| Big-O | Name | Example |
+|---|---|---|
+| `O(1)` | Constant | `list[i]`, `dict[key]`, `set` lookup, `append` (amortized) |
+| `O(log n)` | Logarithmic | Binary search, heap push/pop |
+| `O(n)` | Linear | Loop once, `x in list`, `sum`, `max` |
+| `O(n log n)` | Linearithmic | `sorted()`, merge sort |
+| `O(n²)` | Quadratic | Nested loops, bubble/insertion sort |
+| `O(2ⁿ)` / `O(n!)` | Exponential / factorial | All subsets / all permutations, naive `fib` |
+
+Drop constants and smaller terms. Sequential steps **add**, nested steps **multiply**. Realistic work for about one second in Python: `n` up to ~10⁶ for `O(n)`, ~10⁵ for `O(n log n)`, ~5,000 for `O(n²)`.
+
+**Cost of built-ins**
+
+| Structure | Fast `O(1)` | Slow `O(n)` |
+|---|---|---|
+| `list` | index, `append`, `pop()` | `insert(0, x)`, `pop(0)`, `x in list`, `remove` |
+| `dict` / `set` | get, set, delete, `in` (average) | iterate all |
+| `deque` | `append`, `appendleft`, `pop`, `popleft` | index in the middle |
+| `heapq` | `heap[0]` | `heappush` / `heappop` are `O(log n)`; `heapify` is `O(n)` |
+| `bisect` | `O(log n)` search on a sorted list | the `insort` insert is `O(n)` |
+
+**Patterns**
+
+| Pattern | Use when | Idea |
+|---|---|---|
+| Two pointers | Sorted data, pairs, in-place edits | Move `left` and `right` towards each other |
+| Sliding window | Longest/shortest/best contiguous part | Grow the right end, shrink the left when invalid |
+| Prefix sums | Many range-sum queries | `sum(i:j) = prefix[j] - prefix[i]` |
+| Hash map | Counting, "seen before?", pairs | Trade `O(n)` memory for `O(1)` lookups |
+| Binary search | Sorted data, or a yes/no answer that flips once | Halve the search space |
+| Fast/slow pointers | Linked list middle or cycle | Slow moves 1, fast moves 2 |
+| Monotonic stack | Next greater/smaller element | Pop smaller items before pushing |
+| BFS | Fewest steps, level by level | Queue (`deque`) and a visited set |
+| DFS / backtracking | Explore everything, all combinations | Recursion or a stack; choose, explore, undo |
+
+**Searching and sorting**
+```python
+from bisect import bisect_left, bisect_right
+
+data = [1, 2, 2, 2, 5, 8]
+print(bisect_left(data, 2), bisect_right(data, 2), bisect_right(data, 2) - bisect_left(data, 2))
+print(sorted(["pear", "fig", "banana"], key=len, reverse=True))
+# Output: 1 4 3
+# Output: ['banana', 'pear', 'fig']
+```
+- Binary search needs **sorted** data. `bisect_left` gives the first position, `bisect_right` the position after the last.
+- `sorted()` returns a new list; `list.sort()` sorts in place and returns `None`. Both are stable (Timsort, `O(n log n)`, `O(n)` on nearly sorted data).
+
+| Sort | Time (average) | Extra space | Stable |
+|---|---|---|---|
+| Bubble / selection / insertion | `O(n²)` | `O(1)` | Bubble, insertion: yes; selection: no |
+| Merge | `O(n log n)` | `O(n)` | Yes |
+| Quick | `O(n log n)`, worst `O(n²)` | `O(log n)` | No |
+| Heap | `O(n log n)` | `O(1)` | No |
+| Counting | `O(n + k)` | `O(k)` | Yes |
+
+**Stacks, queues, heaps**
+```python
+from collections import deque
+import heapq
+
+stack = []                 # LIFO: append and pop at the end
+stack.append(1); stack.append(2)
+queue = deque([1, 2, 3])   # FIFO: append and popleft
+queue.popleft()
+heap = [5, 1, 3]
+heapq.heapify(heap)        # min-heap: heap[0] is the smallest
+print(stack.pop(), list(queue), heapq.heappop(heap))
+# Output: 2 [2, 3] 1
+```
+`heapq` is a **min**-heap only; negate numbers for a max-heap. Use `(priority, item)` tuples for a priority queue.
+
+**Linked lists, trees, graphs**
+
+| Structure | Key points |
+|---|---|
+| Linked list | Node = `value` + `next`. Use a **dummy node** when the head can change. Save `next` **before** rewiring. |
+| Binary tree | Pre-order: node, left, right. In-order: left, node, right. Post-order: left, right, node. Level-order uses a queue. |
+| BST | Left < node < right. In-order gives sorted values. `O(log n)` if balanced, `O(n)` if it is a chain. |
+| Heap | Parent <= children. Peek `O(1)`, push/pop `O(log n)`. |
+| Trie | One character per node, plus an end-of-word flag. Lookup `O(word length)`. |
+| Graph | Store as an **adjacency list** (`dict` of lists). BFS and DFS are `O(V + E)`. |
+| Dijkstra | Weighted shortest path, non-negative weights, min-heap, `O((V + E) log V)`. |
+| Topological sort | Order for a DAG; prerequisites first. Fewer outputs than vertices means a cycle. |
+
+**Recursion**
+```python
+from functools import cache
+
+@cache
+def fib(n):
+    return n if n < 2 else fib(n - 1) + fib(n - 2)
+
+print(fib(50))
+# Output: 12586269025
+```
+Every recursive function needs a **base case** and a call that gets **smaller**. Python's recursion limit is about 1000 (`sys.getrecursionlimit()`). Use `@cache` when subproblems repeat. Backtracking: **choose, explore, undo**, and append a **copy** (`path[:]`) of the working list to the results.
+
+**Key points:** pick the structure for the operation you do most (`set`/`dict` for lookups, `deque` for queues, `heapq` for min/max, `bisect` for sorted data). State time **and** space complexity. Test on empty, one-item, duplicate and large inputs.
 
 ---
 
