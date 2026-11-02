@@ -39,9 +39,9 @@ My goal is to gradually turn it into a well-organized, beginner-friendly Python 
 | 10 | [Advanced Python](./10-advanced-python/) | Iterators, generators, decorators, type hints | Available |
 | 11 | [Standard Library](./11-useful-standard-library/) | math, random, datetime, pathlib, collections, itertools | Available |
 | 12 | [Testing and Code Quality](./12-testing-and-code-quality/) | Assertions, unit testing, debugging, PEP 8 | Available |
-| 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Working |
-| 14 | [Practice](./14-practice/) | Practice questions and answers | rn Beginner questions available |
-| 15 | [Revision](./15-revision/) | Cheat sheets and common mistakes | rn Cheat sheets and mistakes available |
+| 13 | [DSA with Python](./13-dsa-with-python/) | Complexity, searching, sorting, stacks, trees, graphs | Available |
+| 14 | [Practice](./14-practice/) | Practice questions and answers | Beginner (with answers), intermediate and advanced (questions only) |
+| 15 | [Revision](./15-revision/) | Cheat sheets and common mistakes | Cheat sheets and mistakes available |
 
 ---
 
